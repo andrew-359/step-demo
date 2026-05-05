@@ -1,0 +1,66 @@
+- generic [ref=e3]:
+  - complementary "Основная навигация" [ref=e4]:
+    - generic [ref=e5]:
+      - button "Открыть новый поиск" [ref=e6]:
+        - generic [ref=e7]: S
+        - generic [ref=e8]: Step AI
+      - button "Включить тёмную тему" [ref=e9] [cursor=pointer]:
+        - generic [ref=e10]: ☾
+    - navigation "Разделы проекта" [ref=e11]:
+      - button "Подготовка к проекту" [ref=e12] [cursor=pointer]:
+        - generic [ref=e14]: Подготовка к проекту
+      - button "О проекте" [ref=e15] [cursor=pointer]:
+        - generic [ref=e17]: О проекте
+      - button "Участники проекта" [ref=e18] [cursor=pointer]:
+        - generic [ref=e20]: Участники проекта
+      - button "Структура компании заказчика" [ref=e21] [cursor=pointer]:
+        - generic [ref=e23]: Структура компании заказчика
+      - button "Ключевые фигуры в компании" [ref=e24] [cursor=pointer]:
+        - generic [ref=e26]: Ключевые фигуры в компании
+      - button "Финансовые показатели" [ref=e27] [cursor=pointer]:
+        - generic [ref=e29]: Финансовые показатели
+      - button "Судебный аспект. Риски, арбитраж" [ref=e30] [cursor=pointer]:
+        - generic [ref=e32]: Судебный аспект. Риски, арбитраж
+      - button "Карта инфраструктуры проекта" [ref=e33] [cursor=pointer]:
+        - generic [ref=e35]: Карта инфраструктуры проекта
+      - button "Выводы. Рекомендации" [ref=e36] [cursor=pointer]:
+        - generic [ref=e38]: Выводы. Рекомендации
+      - button "Карта связей" [ref=e39] [cursor=pointer]:
+        - generic [ref=e41]: Карта связей
+      - button "Дальнейшие шаги" [ref=e42] [cursor=pointer]:
+        - generic [ref=e44]: Дальнейшие шаги
+  - main [ref=e45]:
+    - navigation "Верхняя навигация" [ref=e47]:
+      - button "Новый поиск" [ref=e48] [cursor=pointer]
+      - button "История поисков" [ref=e49] [cursor=pointer]
+      - button "О приложении" [ref=e50] [cursor=pointer]
+    - region "Основная область" [ref=e51]:
+      - article "Подготовка к проекту" [ref=e52]:
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: Company Name
+          - generic [ref=e55]:
+            - heading "Подготовка к проекту" [level=1] [ref=e56]
+            - generic [ref=e57]:
+              - paragraph [ref=e58]: Строительство цеха сварки
+              - paragraph [ref=e59]: Производственный корпус · Шушары, Санкт-Петербург
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - term [ref=e63]: Подготовлено
+                - definition [ref=e64]: Company Name
+              - generic [ref=e65]:
+                - term [ref=e66]: Дата
+                - definition [ref=e67]: апрель 2026
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - term [ref=e70]: компаний в холдинге
+              - definition [ref=e71]: "14"
+            - generic [ref=e72]:
+              - term [ref=e73]: выручка 2024, руб.
+              - definition [ref=e74]: 31 млрд
+            - generic [ref=e75]:
+              - term [ref=e76]: год основания
+              - definition [ref=e77]: "1999"
+            - generic [ref=e78]:
+              - term [ref=e79]: сотрудников (оценка)
+              - definition [ref=e80]: ~5 000
+          - paragraph [ref=e81]: "Источники данных: ГЛОБАС, Credinform, ЕГРЮЛ, открытые источники"
