@@ -1,34 +1,40 @@
 <script setup lang="ts">
-const preparationMetrics = [
+import { computed } from 'vue'
+
+import { demoProtocol } from '@/pages/home/model/demoProtocol'
+
+const preparationMetrics = computed(() => [
   {
-    value: '14',
+    value: demoProtocol.activeProject.company.holdingCompanies,
     label: 'компаний в холдинге',
   },
   {
-    value: '31 млрд',
+    value: demoProtocol.activeProject.company.revenue,
     label: 'выручка 2024, руб.',
   },
   {
-    value: '1999',
+    value: demoProtocol.activeProject.company.founded,
     label: 'год основания',
   },
   {
-    value: '~5 000',
+    value: demoProtocol.activeProject.company.employees,
     label: 'сотрудников (оценка)',
   },
-]
+])
 </script>
 
 <template>
   <article class="preparation-board" aria-labelledby="preparation-title">
     <div class="preparation-board__content">
-      <p class="preparation-board__brand">Company Name</p>
+      <p class="preparation-board__brand">
+        {{ demoProtocol.activeProject.company.name }}
+      </p>
 
       <header class="preparation-board__header">
         <h1 id="preparation-title">Подготовка к проекту</h1>
         <div class="preparation-board__summary">
-          <p>Строительство цеха сварки</p>
-          <p>Производственный корпус · Шушары, Санкт-Петербург</p>
+          <p>{{ demoProtocol.activeProject.title }}</p>
+          <p>{{ demoProtocol.activeProject.subtitle }}</p>
         </div>
         <div class="preparation-board__divider" aria-hidden="true">
           <span></span>
@@ -36,11 +42,11 @@ const preparationMetrics = [
         <dl class="preparation-board__meta">
           <div>
             <dt>Подготовлено</dt>
-            <dd>Company Name</dd>
+            <dd>{{ demoProtocol.activeProject.preparedBy }}</dd>
           </div>
           <div>
             <dt>Дата</dt>
-            <dd>апрель 2026</dd>
+            <dd>{{ demoProtocol.activeProject.preparedAt }}</dd>
           </div>
         </dl>
       </header>

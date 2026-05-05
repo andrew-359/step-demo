@@ -35,3 +35,43 @@ export const topNavItems = [
 
 export type SidebarItem = (typeof sidebarItems)[number]
 export type TopNavItem = (typeof topNavItems)[number]
+
+export const protocolFlowItems = [
+  PREPARATION_SECTION,
+  ABOUT_PROJECT_SECTION,
+  PROJECT_PARTICIPANTS_SECTION,
+  CUSTOMER_COMPANY_STRUCTURE_SECTION,
+  KEY_COMPANY_FIGURES_SECTION,
+  RELATIONSHIP_MAP_SECTION,
+  CONCLUSIONS_RECOMMENDATIONS_SECTION,
+  NEXT_STEPS_SECTION,
+] as const satisfies readonly SidebarItem[]
+
+export const protocolFlowLabels: Partial<Record<SidebarItem, string>> = {
+  [PREPARATION_SECTION]: 'Перейти к описанию проекта',
+  [ABOUT_PROJECT_SECTION]: 'Проверить участников',
+  [PROJECT_PARTICIPANTS_SECTION]: 'Проверить структуру заказчика',
+  [CUSTOMER_COMPANY_STRUCTURE_SECTION]: 'Перейти к ключевым фигурам',
+  [KEY_COMPANY_FIGURES_SECTION]: 'Построить цепочки входа',
+  [RELATIONSHIP_MAP_SECTION]: 'Выбрать стратегию',
+  [CONCLUSIONS_RECOMMENDATIONS_SECTION]: 'Сформировать дальнейшие шаги',
+  [NEXT_STEPS_SECTION]: 'Вернуться к новому поиску',
+}
+
+export const companyReferenceItems = [
+  {
+    label: 'Финансы',
+    section: FINANCIAL_INDICATORS_SECTION,
+  },
+  {
+    label: 'Риски и арбитраж',
+    section: LEGAL_RISKS_ARBITRATION_SECTION,
+  },
+  {
+    label: 'Инфраструктура',
+    section: PROJECT_INFRASTRUCTURE_MAP_SECTION,
+  },
+] as const satisfies readonly {
+  label: string
+  section: SidebarItem
+}[]

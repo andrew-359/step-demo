@@ -36,11 +36,19 @@ defineProps<{
   activeSection: SidebarItem
   activeTopNavItem: TopNavItem | null
 }>()
+
+const emit = defineEmits<{
+  openProtocol: []
+  navigateSection: [section: SidebarItem]
+}>()
 </script>
 
 <template>
   <section class="workspace__empty" aria-label="Основная область">
-    <NewSearchPanel v-if="activeTopNavItem === NEW_SEARCH_NAV_ITEM" />
+    <NewSearchPanel
+      v-if="activeTopNavItem === NEW_SEARCH_NAV_ITEM"
+      @open-protocol="emit('openProtocol')"
+    />
     <SearchHistoryPanel v-else-if="activeTopNavItem === SEARCH_HISTORY_NAV_ITEM" />
     <AboutAppPanel v-else-if="activeTopNavItem === ABOUT_APP_NAV_ITEM" />
     <PreparationProjectSection v-else-if="activeSection === PREPARATION_SECTION" />
@@ -69,6 +77,9 @@ defineProps<{
     <RelationshipMapSection
       v-else-if="activeSection === RELATIONSHIP_MAP_SECTION"
     />
-    <NextStepsSection v-else-if="activeSection === NEXT_STEPS_SECTION" />
+    <NextStepsSection
+      v-else-if="activeSection === NEXT_STEPS_SECTION"
+      @open-reference="emit('navigateSection', $event)"
+    />
   </section>
 </template>

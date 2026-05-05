@@ -1,38 +1,12 @@
 <script setup lang="ts">
-const figures = [
-  {
-    name: ['Иван', 'Иванович'],
-    role: 'Гендир. Company Name',
-    inn: 'ИНН: 123456789012',
-    period: 'с 20.11.2023',
-    note: 'Массовый директор (5+ компаний, признак ФНС)',
-    tone: 'warning',
-  },
-  {
-    name: ['Петр', 'Петрович'],
-    role: 'Генеральный директор Company Name',
-    inn: 'ИНН: 123456789012',
-    period: 'с 07.02.2023',
-    note: 'Опытный менеджер Ford Russia 2000–2016',
-    tone: 'success',
-  },
-  {
-    name: ['Сергей', 'Сергеевич'],
-    role: 'Гендир. Company Name',
-    inn: 'ИНН: 123456789012',
-    period: '2024–2025',
-    note: 'Массовый директор (5+ компаний)',
-    tone: 'warning',
-  },
-  {
-    name: ['Алексей', 'Алексеевич'],
-    role: 'Гендиректор Company Name',
-    inn: 'ИНН: 123456789012',
-    period: 'с 13.03.2022',
-    note: 'Данные учредителей скрыты по ФЗ-129',
-    tone: 'danger',
-  },
-]
+import {
+  demoProtocol,
+  figureReviewSummary,
+  setFigureMarker,
+  setFigureReviewStatus,
+} from '@/pages/home/model/demoProtocol'
+
+const figureMarkers = ['кандидат', 'ЛВР', 'ЛПР'] as const
 </script>
 
 <template>
@@ -43,14 +17,44 @@ const figures = [
     </header>
 
     <div class="key-figures__body">
+      <section class="review-queue" aria-label="Очередь проверки">
+        <div>
+          <span>Фигуры</span>
+          <strong>{{ figureReviewSummary.total }}</strong>
+        </div>
+        <div>
+          <span>Требуют проверки</span>
+          <strong>{{ figureReviewSummary.pending }}</strong>
+        </div>
+        <div>
+          <span>Подтверждено</span>
+          <strong>{{ figureReviewSummary.confirmed }}</strong>
+        </div>
+        <div>
+          <span>ЛПР/ЛВР не подтверждены</span>
+          <strong>{{ figureReviewSummary.unconfirmedDecisionMakers }}</strong>
+        </div>
+      </section>
+
       <section class="key-figures__grid" aria-label="Ключевые фигуры">
         <article
-          v-for="figure in figures"
-          :key="figure.name.join(' ')"
+          v-for="figure in demoProtocol.keyFigures"
+          :key="figure.id"
           class="figure-card"
         >
           <div class="figure-card__top" aria-hidden="true"></div>
           <div class="figure-card__content">
+            <div class="figure-card__badges">
+              <span class="protocol-badge protocol-badge--role">
+                {{ figure.marker }}
+              </span>
+              <span
+                class="protocol-badge"
+                :class="`protocol-badge--${figure.reviewStatus === 'подтверждено' ? 'confirmed' : figure.reviewStatus === 'отклонено' ? 'rejected' : 'pending'}`"
+              >
+                {{ figure.reviewStatus }}
+              </span>
+            </div>
             <h2>
               <span v-for="nameLine in figure.name" :key="nameLine">
                 {{ nameLine }}
@@ -60,9 +64,37 @@ const figures = [
             <p class="figure-card__role">{{ figure.role }}</p>
             <p class="figure-card__meta">{{ figure.inn }}</p>
             <p class="figure-card__meta">{{ figure.period }}</p>
+            <p class="figure-card__meta">
+              Уверенность {{ figure.confidence }}% · {{ figure.source }}
+            </p>
+            <div class="figure-card__role-switch" aria-label="Роль в протоколе">
+              <button
+                v-for="marker in figureMarkers"
+                :key="marker"
+                type="button"
+                :class="{ 'figure-card__role-switch-button--active': figure.marker === marker }"
+                @click="setFigureMarker(figure.id, marker)"
+              >
+                {{ marker }}
+              </button>
+            </div>
             <p class="figure-card__note" :class="`figure-card__note--${figure.tone}`">
               {{ figure.note }}
             </p>
+            <div class="figure-card__actions" aria-label="Проверка фигуры">
+              <button
+                type="button"
+                @click="setFigureReviewStatus(figure.id, 'подтверждено')"
+              >
+                Подтвердить
+              </button>
+              <button
+                type="button"
+                @click="setFigureReviewStatus(figure.id, 'отклонено')"
+              >
+                Отклонить
+              </button>
+            </div>
           </div>
         </article>
       </section>
