@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { SidebarItem } from '@/pages/home/model/navigation'
+import {
+  COMPANY_RELATIONSHIP_MAP_SECTION,
+  type SidebarItem,
+} from '@/pages/home/model/navigation'
 
 defineProps<{
   items: readonly SidebarItem[]
@@ -41,7 +44,10 @@ const emit = defineEmits<{
         v-for="item in items"
         :key="item"
         class="sidebar__link"
-        :class="{ 'sidebar__link--active': activeItem === item }"
+        :class="{
+          'sidebar__link--active': activeItem === item,
+          'sidebar__link--featured': item === COMPANY_RELATIONSHIP_MAP_SECTION,
+        }"
         type="button"
         @click="emit('update:activeItem', item)"
       >

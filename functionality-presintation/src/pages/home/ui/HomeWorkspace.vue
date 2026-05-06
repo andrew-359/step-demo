@@ -2,6 +2,7 @@
 import {
   ABOUT_PROJECT_SECTION,
   ABOUT_APP_NAV_ITEM,
+  COMPANY_RELATIONSHIP_MAP_SECTION,
   CONCLUSIONS_RECOMMENDATIONS_SECTION,
   CUSTOMER_COMPANY_STRUCTURE_SECTION,
   FINANCIAL_INDICATORS_SECTION,
@@ -19,6 +20,7 @@ import {
 } from '@/pages/home/model/navigation'
 import AboutAppPanel from '@/pages/home/ui/AboutAppPanel.vue'
 import AboutProjectSection from '@/pages/home/ui/AboutProjectSection.vue'
+import CompanyRelationshipMapSection from '@/pages/home/ui/CompanyRelationshipMapSection.vue'
 import ConclusionsRecommendationsSection from '@/pages/home/ui/ConclusionsRecommendationsSection.vue'
 import CustomerCompanyStructureSection from '@/pages/home/ui/CustomerCompanyStructureSection.vue'
 import FinancialIndicatorsSection from '@/pages/home/ui/FinancialIndicatorsSection.vue'
@@ -51,6 +53,9 @@ const emit = defineEmits<{
     />
     <SearchHistoryPanel v-else-if="activeTopNavItem === SEARCH_HISTORY_NAV_ITEM" />
     <AboutAppPanel v-else-if="activeTopNavItem === ABOUT_APP_NAV_ITEM" />
+    <CompanyRelationshipMapSection
+      v-else-if="activeSection === COMPANY_RELATIONSHIP_MAP_SECTION"
+    />
     <PreparationProjectSection v-else-if="activeSection === PREPARATION_SECTION" />
     <AboutProjectSection v-else-if="activeSection === ABOUT_PROJECT_SECTION" />
     <ProjectParticipantsSection

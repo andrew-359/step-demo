@@ -1,3 +1,4 @@
+export const COMPANY_RELATIONSHIP_MAP_SECTION = 'Карта связей компании'
 export const PREPARATION_SECTION = 'Подготовка к проекту'
 export const ABOUT_PROJECT_SECTION = 'О проекте'
 export const PROJECT_PARTICIPANTS_SECTION = 'Участники проекта'
@@ -14,6 +15,7 @@ export const SEARCH_HISTORY_NAV_ITEM = 'История поисков'
 export const ABOUT_APP_NAV_ITEM = 'О приложении'
 
 export const sidebarItems = [
+  COMPANY_RELATIONSHIP_MAP_SECTION,
   PREPARATION_SECTION,
   ABOUT_PROJECT_SECTION,
   PROJECT_PARTICIPANTS_SECTION,
