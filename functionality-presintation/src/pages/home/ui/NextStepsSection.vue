@@ -12,6 +12,10 @@ import {
 const emit = defineEmits<{
   openReference: [section: SidebarItem]
 }>()
+
+function publicAsset(path: string) {
+  return `${import.meta.env.BASE_URL}${path}`
+}
 </script>
 
 <template>
@@ -66,10 +70,10 @@ const emit = defineEmits<{
           </p>
         </div>
         <nav aria-label="Скачать материалы">
-          <a href="/downloads/project-briefing.txt" download>
+          <a :href="publicAsset('downloads/project-briefing.txt')" download>
             Скачать брифинг
           </a>
-          <a href="/downloads/intro-letter.txt" download>
+          <a :href="publicAsset('downloads/intro-letter.txt')" download>
             Скачать письмо
           </a>
         </nav>
