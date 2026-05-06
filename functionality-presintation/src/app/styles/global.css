@@ -146,16 +146,13 @@ button {
 
 .sidebar__link--featured {
   margin-bottom: 6px;
-  border: 1px solid rgb(196 168 101 / 54%);
-  color: #6f561c;
-  background: #f7f1df;
+  color: #8c6d22;
   font-weight: 800;
 }
 
 .sidebar__link--featured.sidebar__link--active {
-  border-color: #c4a865;
-  color: #102b49;
-  background: #efe2bd;
+  color: #6f561c;
+  background: #f0ede5;
 }
 
 .sidebar__bullet {
@@ -326,14 +323,12 @@ button {
 }
 
 :root[data-theme='dark'] .sidebar__link--featured {
-  border-color: rgb(196 168 101 / 44%);
   color: #f2dfaa;
-  background: rgb(196 168 101 / 10%);
 }
 
 :root[data-theme='dark'] .sidebar__link--featured.sidebar__link--active {
-  color: #102b49;
-  background: #c4a865;
+  color: #f2dfaa;
+  background: #1b2a3d;
 }
 
 :root[data-theme='dark'] .topbar__nav {

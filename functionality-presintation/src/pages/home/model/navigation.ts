@@ -15,7 +15,6 @@ export const SEARCH_HISTORY_NAV_ITEM = 'История поисков'
 export const ABOUT_APP_NAV_ITEM = 'О приложении'
 
 export const sidebarItems = [
-  COMPANY_RELATIONSHIP_MAP_SECTION,
   PREPARATION_SECTION,
   ABOUT_PROJECT_SECTION,
   PROJECT_PARTICIPANTS_SECTION,
@@ -27,6 +26,7 @@ export const sidebarItems = [
   CONCLUSIONS_RECOMMENDATIONS_SECTION,
   RELATIONSHIP_MAP_SECTION,
   NEXT_STEPS_SECTION,
+  COMPANY_RELATIONSHIP_MAP_SECTION,
 ] as const
 
 export const topNavItems = [
