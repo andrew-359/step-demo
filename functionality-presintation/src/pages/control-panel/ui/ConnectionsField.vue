@@ -96,7 +96,7 @@ function removeConnection(index: number) {
       <button
         class="connections-field__remove"
         type="button"
-        aria-label="Удалить связь"
+        aria-label="Удалить"
         @click="removeConnection(index)"
       >
         ×
