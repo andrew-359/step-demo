@@ -1,24 +1,34 @@
 <script setup lang="ts">
-import type { TopNavItem } from '@/pages/home/model/navigation'
+import { CONTROL_PANEL_NAV_ITEM, type TopNavItem } from '@/pages/home/model/navigation'
 
-defineProps<{
-  items: readonly TopNavItem[]
-  activeItem: TopNavItem | null
-  flowActionLabel: string | null
-  flowActionDisabled: boolean
-  flowActionLoading: boolean
-  flowActionStatus: string | null
-}>()
+withDefaults(
+  defineProps<{
+    items: readonly TopNavItem[]
+    activeItem: TopNavItem | null
+    flowActionLabel: string | null
+    flowActionDisabled: boolean
+    flowActionLoading: boolean
+    flowActionStatus: string | null
+    showControlPanel?: boolean
+    controlPanelActive?: boolean
+  }>(),
+  {
+    showControlPanel: true,
+    controlPanelActive: false,
+  },
+)
 
 const emit = defineEmits<{
   'update:activeItem': [item: TopNavItem]
   runFlowAction: []
+  openControlPanel: []
 }>()
 </script>
 
 <template>
   <header class="topbar">
     <div class="topbar__actions" aria-label="Действия протокола">
+      <slot name="leading" />
       <button
         v-if="flowActionLabel"
         class="topbar__action"
@@ -40,11 +50,20 @@ const emit = defineEmits<{
         v-for="item in items"
         :key="item"
         class="topbar__link"
-        :class="{ 'topbar__link--active': activeItem === item }"
+        :class="{ 'topbar__link--active': !controlPanelActive && activeItem === item }"
         type="button"
         @click="emit('update:activeItem', item)"
       >
         {{ item }}
+      </button>
+      <button
+        v-if="showControlPanel"
+        class="topbar__link"
+        :class="{ 'topbar__link--active': controlPanelActive }"
+        type="button"
+        @click="emit('openControlPanel')"
+      >
+        {{ CONTROL_PANEL_NAV_ITEM }}
       </button>
     </nav>
   </header>

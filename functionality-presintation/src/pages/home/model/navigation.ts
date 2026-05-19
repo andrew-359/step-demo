@@ -13,6 +13,7 @@ export const NEXT_STEPS_SECTION = 'Дальнейшие шаги'
 export const NEW_SEARCH_NAV_ITEM = 'Новый поиск'
 export const SEARCH_HISTORY_NAV_ITEM = 'История поисков'
 export const ABOUT_APP_NAV_ITEM = 'О приложении'
+export const CONTROL_PANEL_NAV_ITEM = 'Панель управления'
 
 export const sidebarItems = [
   PREPARATION_SECTION,

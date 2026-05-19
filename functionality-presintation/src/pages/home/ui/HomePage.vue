@@ -15,6 +15,7 @@ import {
   type TopNavItem,
 } from '@/pages/home/model/navigation'
 import { selectedStrategy } from '@/pages/home/model/demoProtocol'
+import ControlPanelPage from '@/pages/control-panel/ui/ControlPanelPage.vue'
 import HomeWorkspace from '@/pages/home/ui/HomeWorkspace.vue'
 import ProjectSidebar from '@/pages/home/ui/ProjectSidebar.vue'
 import ProjectTopbar from '@/pages/home/ui/ProjectTopbar.vue'
@@ -25,6 +26,7 @@ const activeSidebarItem = ref<SidebarItem>(PREPARATION_SECTION)
 const activeTopNavItem = ref<TopNavItem | null>(NEW_SEARCH_NAV_ITEM)
 const theme = ref<ThemeMode>('dark')
 const isBuildingNextSteps = ref(false)
+const isControlPanelOpen = ref(false)
 
 function selectSidebarItem(item: SidebarItem) {
   activeSidebarItem.value = item
@@ -36,8 +38,22 @@ function openNewSearch() {
 }
 
 function openProtocol() {
+  isControlPanelOpen.value = false
   activeSidebarItem.value = PREPARATION_SECTION
   activeTopNavItem.value = null
+}
+
+function openControlPanel() {
+  isControlPanelOpen.value = true
+  activeTopNavItem.value = null
+}
+
+function closeControlPanel() {
+  isControlPanelOpen.value = false
+}
+
+function selectTopNavItem(item: TopNavItem) {
+  activeTopNavItem.value = item
 }
 
 const flowActionLabel = computed(() => {
@@ -143,7 +159,15 @@ watch(
 </script>
 
 <template>
-  <div class="app-layout">
+  <ControlPanelPage
+    v-if="isControlPanelOpen"
+    :active-top-nav-item="activeTopNavItem"
+    @update:active-top-nav-item="selectTopNavItem"
+    @close-control-panel="closeControlPanel"
+    @open-protocol="openProtocol"
+  />
+
+  <div v-else class="app-layout">
     <ProjectSidebar
       :active-item="activeTopNavItem ? null : activeSidebarItem"
       :items="sidebarItems"
@@ -155,12 +179,15 @@ watch(
 
     <main class="workspace">
       <ProjectTopbar
-        v-model:active-item="activeTopNavItem"
+        :active-item="activeTopNavItem"
         :flow-action-disabled="isStrategyGateActive"
         :flow-action-label="flowActionLabel"
         :flow-action-loading="isBuildingNextSteps"
         :flow-action-status="flowActionStatus"
         :items="topNavItems"
+        :control-panel-active="false"
+        @update:active-item="selectTopNavItem"
+        @open-control-panel="openControlPanel"
         @run-flow-action="runFlowAction"
       />
       <HomeWorkspace
