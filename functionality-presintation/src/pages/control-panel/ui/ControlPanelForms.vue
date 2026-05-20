@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import {
   activeControlForm,
+  closeControlFormModal,
+  isControlFormModalOpen,
+  openControlFormModal,
   setActiveControlForm,
   type ActiveControlForm,
 } from '@/pages/control-panel/model/activeControlForm'
@@ -71,8 +74,6 @@ const tableRows = computed(() => {
   })
 })
 
-const isFormModalOpen = ref(false)
-
 const modalTitle = computed(() => formTitleByKind[activeControlForm.value])
 
 function resetForm(kind: ActiveControlForm) {
@@ -87,17 +88,17 @@ function resetForm(kind: ActiveControlForm) {
 
 function openCreateForm() {
   resetForm(activeControlForm.value)
-  isFormModalOpen.value = true
+  openControlFormModal()
 }
 
 function openEditForm(entity: GraphEntity) {
   setActiveControlForm(entity.kind)
   hydrateGraphEntityToForm(entity)
-  isFormModalOpen.value = true
+  openControlFormModal()
 }
 
 function closeFormModal() {
-  isFormModalOpen.value = false
+  closeControlFormModal()
 }
 </script>
 
@@ -163,7 +164,7 @@ function closeFormModal() {
     </section>
 
     <div
-      v-if="isFormModalOpen"
+      v-if="isControlFormModalOpen"
       class="entity-form-modal"
       role="dialog"
       aria-modal="true"

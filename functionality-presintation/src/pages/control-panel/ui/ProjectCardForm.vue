@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { projectCardForm } from '@/pages/control-panel/model/controlPanelForms'
 import { syncProjectCardToGraph } from '@/pages/control-panel/model/syncGraphCardFromForm'
-import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
+// import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
 import ControlFormShell from '@/pages/control-panel/ui/ControlFormShell.vue'
 
 const emit = defineEmits<{
@@ -49,10 +49,10 @@ function saveProjectCard() {
         />
       </label>
 
-      <ConfigFieldsHint
+      <!-- <ConfigFieldsHint
         kind="project"
         :description="projectCardForm.description"
-      />
+      /> -->
     </div>
   </ControlFormShell>
 </template>

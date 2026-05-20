@@ -1,6 +1,9 @@
 import { ref } from 'vue'
 
-import { setActiveControlForm } from '@/pages/control-panel/model/activeControlForm'
+import {
+  openControlFormModal,
+  setActiveControlForm,
+} from '@/pages/control-panel/model/activeControlForm'
 import { personCardForm } from '@/pages/control-panel/model/controlPanelForms'
 import { createConnectionId, type GraphEntity } from '@/pages/control-panel/model/connections'
 import { graphEntities } from '@/pages/control-panel/model/graphMockData'
@@ -103,6 +106,7 @@ function prefillEntryPointPersonForm() {
       : []),
   ]
   personCardForm.editingEntityId = null
+  openControlFormModal()
 }
 
 function createIntroCallDraft() {

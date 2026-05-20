@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { companyCardForm } from '@/pages/control-panel/model/controlPanelForms'
 import { syncCompanyCardToGraph } from '@/pages/control-panel/model/syncGraphCardFromForm'
-import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
+// import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
 import ConnectionsField from '@/pages/control-panel/ui/ConnectionsField.vue'
 import ControlFormShell from '@/pages/control-panel/ui/ControlFormShell.vue'
 
@@ -62,10 +62,10 @@ function saveCompanyCard() {
         />
       </label>
 
-      <ConfigFieldsHint
+      <!-- <ConfigFieldsHint
         kind="company"
         :description="companyCardForm.description"
-      />
+      /> -->
     </div>
   </ControlFormShell>
 </template>

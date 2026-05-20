@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { personCardForm } from '@/pages/control-panel/model/controlPanelForms'
 import { syncPersonCardToGraph } from '@/pages/control-panel/model/syncGraphCardFromForm'
-import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
+// import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
 import ConnectionsField from '@/pages/control-panel/ui/ConnectionsField.vue'
 import ControlFormShell from '@/pages/control-panel/ui/ControlFormShell.vue'
 import { formatRuPhone, parseRuPhoneDigits } from '@/shared/lib/phoneMask'
@@ -87,10 +87,10 @@ function savePersonCard() {
         />
       </label>
 
-      <ConfigFieldsHint
+      <!-- <ConfigFieldsHint
         kind="person"
         :description="personCardForm.description"
-      />
+      /> -->
     </div>
   </ControlFormShell>
 </template>

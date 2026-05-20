@@ -3337,7 +3337,7 @@ button {
   max-height: min(860px, calc(100vh - 48px));
   min-height: 0;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
   border: 1px solid #dce4ee;
   border-radius: 18px;
   background: #f8fbfd;
@@ -3385,6 +3385,8 @@ button {
 }
 
 .entity-form-modal__panel .control-form {
+  flex: 1 1 auto;
+  min-height: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -3417,12 +3419,14 @@ button {
 }
 
 .control-form__body {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
+  overflow: auto;
 }
 
 .control-form__footer {
   display: flex;
+  flex: 0 0 auto;
   justify-content: flex-end;
   margin-top: 14px;
   padding-top: 4px;
@@ -3504,6 +3508,7 @@ button {
   line-height: 1.35;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 :root[data-theme='dark'] .graph-node__description {
