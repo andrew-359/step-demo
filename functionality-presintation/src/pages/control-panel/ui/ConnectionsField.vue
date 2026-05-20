@@ -18,7 +18,7 @@ const pendingRelationType = ref<ConnectionOption | null>(null)
 
 const relationTypeHints: Record<ConnectionOption, string> = {
   Компания: 'Юридическое лицо или контрагент',
-  Персоналия: 'Физлицо, ЛПР или контакт',
+  Человек: 'Физлицо, ЛПР или контакт',
   Проект: 'Объект, лот или инициатива',
   Контрагент: 'Внешний участник сделки',
   Партнёр: 'Партнёрский или совместный контур',
@@ -140,7 +140,7 @@ function removeConnection(index: number) {
 
           <p id="relation-picker-desc" class="relation-picker__lead">
             Укажите характер связи. На следующем шаге выберите сущность в графе
-            персоналий, компаний или проектов.
+            людей, компаний или проектов.
           </p>
 
           <div class="relation-picker__options">

@@ -11,7 +11,7 @@ import {
 } from '@/pages/control-panel/model/verificationStore'
 
 const verificationGroups: { id: GraphCategoryId; title: string }[] = [
-  { id: 'persons', title: 'Персоналии' },
+  { id: 'persons', title: 'Люди' },
   { id: 'companies', title: 'Компании' },
   { id: 'projects', title: 'Проекты' },
 ]

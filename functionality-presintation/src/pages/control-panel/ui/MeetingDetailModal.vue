@@ -6,6 +6,8 @@ import { graphEntities } from '@/pages/control-panel/model/graphMockData'
 import {
   activeMeetingId,
   addMeetingComment,
+  approvedMeetingDraftIds,
+  approveMeetingDraft,
   availableMeetingLabels,
   closeMeeting,
   getMeetingById,
@@ -29,6 +31,12 @@ const meeting = computed(() => {
 })
 
 const graphParticipants = computed(() => Object.values(graphEntities))
+const isMeetingDraftApproved = computed(() => {
+  return meeting.value ? Boolean(approvedMeetingDraftIds[meeting.value.id]) : false
+})
+const canApproveAiDraft = computed(() => {
+  return meeting.value?.id === 'meeting-intro-petr' && !isMeetingDraftApproved.value
+})
 
 function togglePopover(kind: PopoverKind) {
   openPopover.value = openPopover.value === kind ? null : kind
@@ -76,6 +84,12 @@ function formatDisplayDate(value: string | null) {
     year: 'numeric',
   }).format(new Date(value))
 }
+
+function approveCurrentDraft() {
+  if (meeting.value) {
+    approveMeetingDraft(meeting.value.id)
+  }
+}
 </script>
 
 <template>
@@ -88,36 +102,11 @@ function formatDisplayDate(value: string | null) {
       <article class="meeting-modal" role="dialog" aria-modal="true">
         <header class="meeting-modal__topbar">
           <button class="meeting-modal__list" type="button">
-            <span>Встречи</span>
+            <span>Задача</span>
             <span aria-hidden="true">▾</span>
           </button>
 
           <div class="meeting-modal__topbar-actions">
-            <button class="meeting-modal__icon-btn" type="button" aria-label="Обложка">
-              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                <rect
-                  x="4"
-                  y="5"
-                  width="14"
-                  height="12"
-                  rx="2"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                />
-                <path
-                  d="M8 14l2-2 2 2 3-3 2 2"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-            <button class="meeting-modal__icon-btn" type="button" aria-label="Действия">
-              ···
-            </button>
             <button
               class="meeting-modal__icon-btn"
               type="button"
@@ -137,9 +126,14 @@ function formatDisplayDate(value: string | null) {
             </div>
 
             <div class="meeting-modal__toolbar">
-              <button class="meeting-modal__pill" type="button">
-                <span aria-hidden="true">+</span>
-                Добавить
+              <button
+                v-if="canApproveAiDraft"
+                class="meeting-modal__pill meeting-modal__pill--primary"
+                type="button"
+                @click="approveCurrentDraft"
+              >
+                <span aria-hidden="true">✓</span>
+                Всё верно, взять в работу
               </button>
 
               <div class="meeting-modal__pill-wrap">
@@ -303,12 +297,9 @@ function formatDisplayDate(value: string | null) {
           <aside class="meeting-modal__sidebar">
             <header class="meeting-modal__sidebar-header">
               <div>
-                <span aria-hidden="true">💬</span>
-                <h2>Комментарии и события</h2>
+                <span aria-hidden="true">☰</span>
+                <h2>Журнал</h2>
               </div>
-              <button class="meeting-modal__details" type="button">
-                Показать подробности
-              </button>
             </header>
 
             <div class="meeting-modal__comment-box">

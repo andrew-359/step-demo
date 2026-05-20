@@ -152,7 +152,7 @@ export const graphEntities = reactive(initialGraphEntities)
 const initialGraphCategories: GraphCategory[] = [
   {
     id: 'persons',
-    label: 'Персоналии',
+    label: 'Люди',
     kind: 'person',
     description: 'Ключевые фигуры, ЛПР и цепочки входа',
     entityIds: [
@@ -191,7 +191,7 @@ export const graphCategories = reactive(
   })),
 )
 
-export const graphEdges: GraphEdge[] = [
+export const graphEdges = reactive<GraphEdge[]>([
   { id: 'e1', sourceId: 'person-team', targetId: 'person-sergey', label: 'интро' },
   { id: 'e2', sourceId: 'person-sergey', targetId: 'person-petr', label: 'рекомендация' },
   { id: 'e3', sourceId: 'person-team', targetId: 'person-alexey', label: 'альт. путь' },
@@ -207,7 +207,7 @@ export const graphEdges: GraphEdge[] = [
   { id: 'e13', sourceId: 'person-petr', targetId: 'project-weld', label: 'ЛПР' },
   { id: 'e14', sourceId: 'project-weld', targetId: 'project-lot1', label: 'лот 1' },
   { id: 'e15', sourceId: 'project-weld', targetId: 'project-lot2', label: 'лот 2' },
-]
+])
 
 export function getCategoryById(id: GraphCategory['id']) {
   return graphCategories.find((category) => category.id === id) ?? null

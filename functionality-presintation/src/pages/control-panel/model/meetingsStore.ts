@@ -79,53 +79,53 @@ function createActivity(text: string): MeetingActivity {
 const initialMeetings: Meeting[] = [
   {
     id: 'meeting-1',
-    title: 'Встреча 1',
-    description: '',
-    labels: [],
+    title: 'Проверить, кто сейчас отвечает за закупки',
+    description: 'Уточнить актуального человека в закупочном контуре Company Name перед запросом интро.',
+    labels: [{ ...availableMeetingLabels.find((label) => label.id === 'label-prep')! }],
     date: null,
     participants: [],
     comments: [],
     activity: [
-      createActivity('добавил(а) эту карточку в список <strong>backlog</strong>'),
+      createActivity('добавил(а) задачу в подготовку проекта'),
     ],
     createdAt: new Date().toISOString(),
   },
   {
     id: 'meeting-2',
-    title: 'Встреча 2',
-    description: '',
-    labels: [],
+    title: 'Спросить Сергея про актуальность связи',
+    description: 'Проверить, может ли Сергей сейчас помочь выйти на Петра Петровича.',
+    labels: [{ ...availableMeetingLabels.find((label) => label.id === 'label-follow')! }],
     date: null,
     participants: [],
     comments: [],
     activity: [
-      createActivity('добавил(а) эту карточку в список <strong>backlog</strong>'),
+      createActivity('добавил(а) задачу в подготовку проекта'),
     ],
     createdAt: new Date().toISOString(),
   },
   {
     id: 'meeting-3',
-    title: 'Встреча 3',
-    description: '',
-    labels: [],
+    title: 'Подготовить короткий бриф по проекту',
+    description: 'Собрать в один экран объект, цель контакта, риски и следующий шаг для разговора.',
+    labels: [{ ...availableMeetingLabels.find((label) => label.id === 'label-client')! }],
     date: null,
     participants: [],
     comments: [],
     activity: [
-      createActivity('добавил(а) эту карточку в список <strong>backlog</strong>'),
+      createActivity('добавил(а) задачу в подготовку проекта'),
     ],
     createdAt: new Date().toISOString(),
   },
   {
     id: 'meeting-4',
-    title: 'Встреча 4',
-    description: '',
-    labels: [],
+    title: 'Обновить граф после разговора',
+    description: 'После контакта зафиксировать, кто подтвердил связь и что изменилось в стратегии входа.',
+    labels: [{ ...availableMeetingLabels.find((label) => label.id === 'label-review')! }],
     date: null,
     participants: [],
     comments: [],
     activity: [
-      createActivity('добавил(а) эту карточку в список <strong>backlog</strong>'),
+      createActivity('добавил(а) задачу в подготовку проекта'),
     ],
     createdAt: new Date().toISOString(),
   },
@@ -133,6 +133,7 @@ const initialMeetings: Meeting[] = [
 
 export const meetings = reactive<Meeting[]>([...initialMeetings])
 export const activeMeetingId = ref<string | null>(null)
+export const approvedMeetingDraftIds = reactive<Record<string, boolean>>({})
 
 export function getMeetingById(id: string) {
   return meetings.find((meeting) => meeting.id === id) ?? null
@@ -142,7 +143,7 @@ export function addMeetingCard() {
   const nextIndex = meetings.length + 1
   const meeting: Meeting = {
     id: createMeetingId(),
-    title: `Встреча ${nextIndex}`,
+    title: `Новая задача ${nextIndex}`,
     description: '',
     labels: [],
     date: null,
@@ -157,6 +158,68 @@ export function addMeetingCard() {
   meetings.push(meeting)
   activeMeetingId.value = meeting.id
   return meeting
+}
+
+export function createIntroMeetingDraft(participants: GraphEntity[]) {
+  const existing = meetings.find((meeting) => meeting.id === 'meeting-intro-petr')
+
+  if (existing) {
+    activeMeetingId.value = existing.id
+    return existing
+  }
+
+  const meeting: Meeting = {
+    id: 'meeting-intro-petr',
+    title: 'Попросить Сергея помочь выйти на Петра',
+    description:
+      'Помощник понял фразу: «договорись с Сергеем на пятницу и позови Петра». Нужно коротко обсудить, может ли Сергей познакомить команду с Петром по проекту «Строительство цеха сварки».',
+    labels: [
+      { ...availableMeetingLabels.find((label) => label.id === 'label-prep')! },
+      { ...availableMeetingLabels.find((label) => label.id === 'label-follow')! },
+    ],
+    date: '2026-05-22',
+    participants: participants.map((participant) => ({
+      id: participant.id,
+      kind: participant.kind,
+      title: participant.title,
+      subtitle: participant.subtitle,
+      meta: participant.meta.map((row) => ({ ...row })),
+    })),
+    comments: [
+      {
+        id: createMeetingId(),
+        author: 'Помощник',
+        text: 'Звонок подготовлен: дата и участники распознаны из обычной фразы. Проверьте детали перед подтверждением.',
+        createdAt: formatActivityDate(new Date()),
+      },
+    ],
+    activity: [
+      {
+        id: createMeetingId(),
+        author: 'Помощник',
+        text: 'подготовил(а) звонок и добавил(а) участников из графа',
+        createdAt: formatActivityDate(new Date()),
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  }
+
+  meetings.unshift(meeting)
+  activeMeetingId.value = meeting.id
+  return meeting
+}
+
+export function approveMeetingDraft(meetingId: string) {
+  const meeting = getMeetingById(meetingId)
+
+  if (!meeting || approvedMeetingDraftIds[meetingId]) {
+    return
+  }
+
+  approvedMeetingDraftIds[meetingId] = true
+  meeting.activity.unshift(
+    createActivity('проверил(а) звонок и взял(а) следующий шаг в работу'),
+  )
 }
 
 export function openMeeting(id: string) {

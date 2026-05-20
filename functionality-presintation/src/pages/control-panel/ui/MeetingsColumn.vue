@@ -20,14 +20,7 @@ function formatCardDate(value: string | null) {
 <template>
   <section class="meetings-board" aria-labelledby="meetings-board-title">
     <header class="meetings-board__header">
-      <h2 id="meetings-board-title" class="meetings-board__title">Встречи</h2>
-      <button
-        class="meetings-board__menu"
-        type="button"
-        aria-label="Меню списка встреч"
-      >
-        ···
-      </button>
+      <h2 id="meetings-board-title" class="meetings-board__title">Задачи</h2>
     </header>
 
     <div class="meetings-board__cards">
@@ -61,32 +54,7 @@ function formatCardDate(value: string | null) {
         @click="addMeetingCard"
       >
         <span aria-hidden="true">+</span>
-        Добавить карточку
-      </button>
-      <button
-        class="meetings-board__template"
-        type="button"
-        aria-label="Создать из шаблона"
-      >
-        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-          <rect
-            x="4"
-            y="5"
-            width="14"
-            height="14"
-            rx="2"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-          />
-          <path
-            d="M14 5v4h4M10 13h4M10 16h6"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-          />
-        </svg>
+        Добавить задачу
       </button>
     </footer>
   </section>

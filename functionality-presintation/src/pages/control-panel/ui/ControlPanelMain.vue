@@ -8,12 +8,17 @@ import MeetingsColumn from '@/pages/control-panel/ui/MeetingsColumn.vue'
 
 <template>
   <div class="control-panel-main">
-    <section class="control-panel-sideboards" aria-label="Списки панели управления">
+    <aside class="control-panel-ops" aria-label="Операции под рукой">
+      <header class="control-panel-ops__header">
+        <p>Нужно сейчас</p>
+      </header>
       <MeetingsColumn />
       <DataVerificationColumn />
-    </section>
+    </aside>
 
-    <ControlPanelForms />
+    <section class="control-panel-main__workspace" aria-label="Работа с карточкой">
+      <ControlPanelForms />
+    </section>
     <MeetingDetailModal />
     <VerificationCategoryModal />
   </div>

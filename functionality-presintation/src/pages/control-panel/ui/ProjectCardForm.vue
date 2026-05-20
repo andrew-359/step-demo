@@ -1,14 +1,24 @@
 <script setup lang="ts">
 import { projectCardForm } from '@/pages/control-panel/model/controlPanelForms'
 import { syncProjectCardToGraph } from '@/pages/control-panel/model/syncGraphCardFromForm'
+import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
 import ControlFormShell from '@/pages/control-panel/ui/ControlFormShell.vue'
+
+const emit = defineEmits<{
+  saved: []
+}>()
+
+function saveProjectCard() {
+  syncProjectCardToGraph()
+  emit('saved')
+}
 </script>
 
 <template>
   <ControlFormShell
     title="Создание и редактирование карточки проекта"
     title-id="project-card-title"
-    @edit="syncProjectCardToGraph"
+    @edit="saveProjectCard"
   >
     <div class="control-form__grid">
       <label class="control-form__field">
@@ -38,6 +48,11 @@ import ControlFormShell from '@/pages/control-panel/ui/ControlFormShell.vue'
           placeholder="Краткое описание проекта"
         />
       </label>
+
+      <ConfigFieldsHint
+        kind="project"
+        :description="projectCardForm.description"
+      />
     </div>
   </ControlFormShell>
 </template>

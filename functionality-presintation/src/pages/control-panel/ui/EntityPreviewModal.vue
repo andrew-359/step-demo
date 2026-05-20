@@ -10,7 +10,7 @@ const emit = defineEmits<{
 }>()
 
 const kindLabels = {
-  person: 'Персоналия',
+  person: 'Человек',
   company: 'Компания',
   project: 'Проект',
 } as const

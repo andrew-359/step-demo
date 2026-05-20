@@ -3,9 +3,14 @@ import { computed } from 'vue'
 
 import { personCardForm } from '@/pages/control-panel/model/controlPanelForms'
 import { syncPersonCardToGraph } from '@/pages/control-panel/model/syncGraphCardFromForm'
+import ConfigFieldsHint from '@/pages/control-panel/ui/ConfigFieldsHint.vue'
 import ConnectionsField from '@/pages/control-panel/ui/ConnectionsField.vue'
 import ControlFormShell from '@/pages/control-panel/ui/ControlFormShell.vue'
 import { formatRuPhone, parseRuPhoneDigits } from '@/shared/lib/phoneMask'
+
+const emit = defineEmits<{
+  saved: []
+}>()
 
 const phoneMasked = computed({
   get: () => formatRuPhone(personCardForm.phone),
@@ -14,13 +19,18 @@ const phoneMasked = computed({
     personCardForm.phone = digits ? formatRuPhone(digits) : ''
   },
 })
+
+function savePersonCard() {
+  syncPersonCardToGraph()
+  emit('saved')
+}
 </script>
 
 <template>
   <ControlFormShell
-    title="Создание и редактирование карточки персоналия"
+    title="Создание и редактирование карточки человека"
     title-id="person-card-title"
-    @edit="syncPersonCardToGraph"
+    @edit="savePersonCard"
   >
     <div class="control-form__grid">
       <label class="control-form__field">
@@ -73,9 +83,14 @@ const phoneMasked = computed({
           v-model="personCardForm.description"
           class="control-form__input control-form__input--textarea"
           rows="3"
-          placeholder="Краткое описание персоналии"
+          placeholder="Краткое описание человека"
         />
       </label>
+
+      <ConfigFieldsHint
+        kind="person"
+        :description="personCardForm.description"
+      />
     </div>
   </ControlFormShell>
 </template>

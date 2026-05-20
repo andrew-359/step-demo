@@ -12,12 +12,14 @@ import {
   createGraphEntityId,
   ENTITY_DESCRIPTION_LABEL,
   type ConnectionLink,
+  type ConnectionOption,
   type EntityMetaRow,
   type GraphCategoryId,
   type GraphEntity,
 } from '@/pages/control-panel/model/connections'
 import {
   graphCategories,
+  graphEdges,
   graphEntities,
 } from '@/pages/control-panel/model/graphMockData'
 
@@ -45,6 +47,40 @@ function appendDescriptionMeta(meta: EntityMetaRow[], description: string) {
   if (hasFilledText(description)) {
     meta.push({ label: ENTITY_DESCRIPTION_LABEL, value: description.trim() })
   }
+}
+
+function getMetaValue(entity: GraphEntity, label: string) {
+  return entity.meta.find((row) => row.label === label)?.value ?? ''
+}
+
+function relationTypeForEntity(entity: GraphEntity): ConnectionOption {
+  const relationByKind: Record<GraphEntity['kind'], ConnectionOption> = {
+    person: 'Человек',
+    company: 'Компания',
+    project: 'Проект',
+  }
+
+  return relationByKind[entity.kind]
+}
+
+function buildConnectionsForEntity(entityId: string): ConnectionLink[] {
+  return graphEdges
+    .filter((edge) => edge.sourceId === entityId || edge.targetId === entityId)
+    .map((edge) => {
+      const targetId = edge.sourceId === entityId ? edge.targetId : edge.sourceId
+      const target = graphEntities[targetId]
+
+      if (!target) {
+        return null
+      }
+
+      return {
+        id: `link-${edge.id}`,
+        relationType: relationTypeForEntity(target),
+        target,
+      }
+    })
+    .filter((link): link is ConnectionLink => Boolean(link))
 }
 
 function mergeMeta(existing: EntityMetaRow[], incoming: EntityMetaRow[]) {
@@ -134,6 +170,26 @@ function saveEntity(
   return graphEntities[entityId]
 }
 
+function syncConnectionEdges(entity: GraphEntity, connections: ConnectionLink[]) {
+  for (const link of connections) {
+    const exists = graphEdges.some(
+      (edge) =>
+        edge.sourceId === entity.id &&
+        edge.targetId === link.target.id &&
+        edge.label === link.relationType,
+    )
+
+    if (!exists) {
+      graphEdges.push({
+        id: `edge-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        sourceId: entity.id,
+        targetId: link.target.id,
+        label: link.relationType,
+      })
+    }
+  }
+}
+
 function buildPersonEntityFromForm(): GraphEntity {
   const meta: EntityMetaRow[] = []
 
@@ -153,7 +209,7 @@ function buildPersonEntityFromForm(): GraphEntity {
 
   const title = hasFilledText(personCardForm.fullName)
     ? personCardForm.fullName.trim()
-    : 'Новая персоналия'
+    : 'Новый человек'
 
   const subtitleParts: string[] = []
 
@@ -239,6 +295,7 @@ export function syncPersonCardToGraph() {
     personCardForm.editingEntityId,
   )
 
+  syncConnectionEdges(entity, personCardForm.connections)
   resetPersonCardForm()
   return entity
 }
@@ -250,6 +307,7 @@ export function syncCompanyCardToGraph() {
     companyCardForm.editingEntityId,
   )
 
+  syncConnectionEdges(entity, companyCardForm.connections)
   resetCompanyCardForm()
   return entity
 }
@@ -263,4 +321,35 @@ export function syncProjectCardToGraph() {
 
   resetProjectCardForm()
   return entity
+}
+
+export function hydrateGraphEntityToForm(entity: GraphEntity) {
+  if (entity.kind === 'person') {
+    resetPersonCardForm()
+    personCardForm.editingEntityId = entity.id
+    personCardForm.fullName = entity.title
+    personCardForm.inn = Number(getMetaValue(entity, 'ИНН')) || ''
+    personCardForm.phone = getMetaValue(entity, 'Телефон')
+    personCardForm.email = getMetaValue(entity, 'Почта')
+    personCardForm.description = getMetaValue(entity, ENTITY_DESCRIPTION_LABEL)
+    personCardForm.connections = buildConnectionsForEntity(entity.id)
+    return
+  }
+
+  if (entity.kind === 'company') {
+    resetCompanyCardForm()
+    companyCardForm.editingEntityId = entity.id
+    companyCardForm.name = entity.title
+    companyCardForm.inn = Number(getMetaValue(entity, 'ИНН')) || ''
+    companyCardForm.address = getMetaValue(entity, 'Адрес')
+    companyCardForm.description = getMetaValue(entity, ENTITY_DESCRIPTION_LABEL)
+    companyCardForm.connections = buildConnectionsForEntity(entity.id)
+    return
+  }
+
+  resetProjectCardForm()
+  projectCardForm.editingEntityId = entity.id
+  projectCardForm.name = entity.title
+  projectCardForm.curator = getMetaValue(entity, 'Куратор проекта')
+  projectCardForm.description = getMetaValue(entity, ENTITY_DESCRIPTION_LABEL)
 }

@@ -69,7 +69,7 @@ const visibleEdges = computed(() => {
 })
 
 const entityKindLabels = {
-  person: 'Персоналия',
+  person: 'Человек',
   company: 'Компания',
   project: 'Проект',
 } as const

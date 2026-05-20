@@ -1,26 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-type ChatRole = 'user' | 'assistant'
-
-type ChatMessage = {
-  id: number
-  role: ChatRole
-  text: string
-}
-
-const messages = ref<ChatMessage[]>([
-  {
-    id: 1,
-    role: 'assistant',
-    text: 'Здравствуйте. Я помогу заполнить карточки, проверить связи или запланировать встречу. Опишите задачу или прикрепите файл.',
-  },
-])
+import {
+  assistantMessages as messages,
+  pushAssistantChatMessage,
+} from '@/pages/control-panel/model/adminAssistantChat'
+import {
+  activeAdminDemoFlowId,
+  adminDemoFlows,
+  runAdminDemoFlow,
+  type AdminDemoFlow,
+} from '@/pages/control-panel/model/adminDemoFlows'
 
 const draft = ref('')
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const isRecording = ref(false)
-let messageId = 2
+
+const isFlowRunning = computed(() => Boolean(activeAdminDemoFlowId.value))
 
 function sendMessage() {
   const text = draft.value.trim()
@@ -29,21 +25,27 @@ function sendMessage() {
     return
   }
 
-  messages.value.push({
-    id: messageId++,
-    role: 'user',
-    text,
-  })
+  pushAssistantChatMessage('user', text)
 
   draft.value = ''
 
   window.setTimeout(() => {
-    messages.value.push({
-      id: messageId++,
-      role: 'assistant',
-      text: 'Принято. Данные будут учтены при сохранении карточек.',
-    })
+    pushAssistantChatMessage(
+      'assistant',
+      'Принято. Для демо выберите один из примеров ниже: подготовить контакт или подготовить звонок. Я заполню форму, а финальное подтверждение останется за вами.',
+    )
   }, 500)
+}
+
+function runFlow(flow: AdminDemoFlow) {
+  if (isFlowRunning.value) {
+    return
+  }
+
+  pushAssistantChatMessage('user', flow.command)
+  void runAdminDemoFlow(flow.id, (message, actionLabel) => {
+    pushAssistantChatMessage('assistant', message, actionLabel)
+  })
 }
 
 function openFilePicker() {
@@ -58,11 +60,7 @@ function onFilesSelected(event: Event) {
     return
   }
 
-  messages.value.push({
-    id: messageId++,
-    role: 'user',
-    text: `Прикреплён файл: ${fileName}`,
-  })
+  pushAssistantChatMessage('user', `Прикреплён файл: ${fileName}`)
 
   input.value = ''
 }
@@ -71,19 +69,11 @@ function toggleRecording() {
   isRecording.value = !isRecording.value
 
   if (isRecording.value) {
-    messages.value.push({
-      id: messageId++,
-      role: 'user',
-      text: '● Запись голосового сообщения...',
-    })
+    pushAssistantChatMessage('user', '● Запись голосового сообщения...')
     return
   }
 
-  messages.value.push({
-    id: messageId++,
-    role: 'user',
-    text: 'Голосовое сообщение отправлено',
-  })
+  pushAssistantChatMessage('user', 'Голосовое сообщение отправлено')
 }
 </script>
 
@@ -99,6 +89,21 @@ function toggleRecording() {
     </header>
 
     <div class="agent-chat__messages" role="log" aria-live="polite">
+      <section class="agent-chat__flows" aria-label="Демо-сценарии">
+        <p class="agent-chat__flows-title">Что сделать</p>
+        <button
+          v-for="flow in adminDemoFlows"
+          :key="flow.id"
+          class="agent-chat__flow"
+          type="button"
+          :disabled="isFlowRunning"
+          @click="runFlow(flow)"
+        >
+          <span>{{ flow.title }}</span>
+          <small>{{ flow.command }}</small>
+        </button>
+      </section>
+
       <article
         v-for="message in messages"
         :key="message.id"
@@ -106,6 +111,12 @@ function toggleRecording() {
         :class="`agent-chat__message--${message.role}`"
       >
         <p>{{ message.text }}</p>
+        <span
+          v-if="message.actionLabel"
+          class="agent-chat__action-label"
+        >
+          {{ message.actionLabel }}
+        </span>
       </article>
     </div>
 
